@@ -1,0 +1,19 @@
+{
+  "name": "@parsiq/tsunami-client-os",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/parsiqio/next/tsunami-client/tsunami-client-os.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/parsiqio/next/tsunami-client/tsunami-client-os/issues"
+  },
+  "homepage": "https://gitlab.com/parsiqio/next/tsunami-client/tsunami-client-os#readme"
+}
