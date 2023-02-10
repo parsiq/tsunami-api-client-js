@@ -15,8 +15,8 @@ const MALFORMED_RESPONSE_MESSAGE = 'Malformed Tsunami response';
 const REQUEST_FAILED_MESSAGE = 'Tsunami request failed';
 
 export class TsunamiApiClient extends HttpClient implements ITsunamiClient {
-    constructor(baseUrl: string) {
-        super(baseUrl);
+    constructor(baseUrl: string, apiKey: string) {
+        super(baseUrl, apiKey);
     }
 
     public async getBlockByHash(blockHash: string): Promise<HistoricalBlock> {
