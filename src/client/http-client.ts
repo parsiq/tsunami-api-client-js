@@ -1,15 +1,14 @@
 import axios, { AxiosInstance } from 'axios';
+import axiosRetry, {IAxiosRetryConfig} from "axios-retry";
 
-export type TsunamiApiClientConfig = {
-    retries: number;
-}
 export abstract class HttpClient {
     protected readonly instance: AxiosInstance;
 
-    public constructor(baseURL: string, apiKey: string, config?: TsunamiApiClientConfig) {
+    public constructor(baseURL: string, apiKey: string, config?: IAxiosRetryConfig) {
         this.instance = axios.create({
             baseURL,
             auth: {username: apiKey, password: ''}
         });
+        axiosRetry(this.instance, config)
     }
 }
