@@ -126,7 +126,6 @@ export class TsunamiApiClient extends HttpClient implements ITsunamiClient {
     ): AsyncGenerator<T[]> {
         let offset: string | undefined;
         let hasMore;
-        criteria.topic_0 = criteria.topic_0[0]??null
         do {
             const params = {
                 ...boundaries,
