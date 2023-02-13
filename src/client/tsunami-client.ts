@@ -10,6 +10,7 @@ import {TransactionLog} from "../dto/transaction-log";
 import {GetHistoricalCallQueryCriteria} from "../dto/get-historical-call-query-criteria";
 import {HttpStatusCode} from "axios";
 import {HistoricalRange} from "../dto/historical-range";
+import {convertForRequest} from "./convertor";
 
 const MALFORMED_RESPONSE_MESSAGE = 'Malformed Tsunami response';
 const REQUEST_FAILED_MESSAGE = 'Tsunami request failed';
@@ -125,10 +126,11 @@ export class TsunamiApiClient extends HttpClient implements ITsunamiClient {
     ): AsyncGenerator<T[]> {
         let offset: string | undefined;
         let hasMore;
+        criteria.topic_0 = criteria.topic_0[0]??null
         do {
             const params = {
                 ...boundaries,
-                ...criteria,
+                ...convertForRequest(criteria),
                 ...(offset ? { offset } : {}),
                 limit: Math.min(boundaries?.limit ?? 1000, 1000),
             };
