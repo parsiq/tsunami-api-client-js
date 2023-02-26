@@ -1,0 +1,42 @@
+{
+  "name": "@parsiq/tsunami-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublishOnly": "rm -rf dist/* && npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" --fix",
+    "build": "rm -rf dist/* && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/parsiq/tsunami-api-client-js.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/parsiq/tsunami-api-client-js/issues"
+  },
+  "homepage": "https://github.com/parsiq/tsunami-api-client-js",
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-sonarjs": "^0.13.0",
+    "prettier": "^2.3.2",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "axios": "^1.3.2",
+    "axios-retry": "^3.4.0"
+  }
+}
