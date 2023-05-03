@@ -18,7 +18,7 @@ import { ChainId, TsunamiApiClient } from '@parsiq/tsunami-client';
 const tsunami = new TsunamiApiClient(process.env.TSUNAMI_API_KEY, ChainId.ETH_MAINNET);
 ```
 
-Don;t forget to pass `TSUNAMI_API_KEY` environment variable to your script.
+Don't forget to pass `TSUNAMI_API_KEY` environment variable to your script.
 
 ## Usage 
 
