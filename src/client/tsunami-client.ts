@@ -239,47 +239,63 @@ export class TsunamiApiClient extends HttpClient implements TsunamiClient {
   }
 
   protected async *queryTsunami<
-    T extends TsunamiEvent | TsunamiCall | TsunamiBlock | TsunamiTransfer | TsunamiTransaction = any,
+    Item extends TsunamiEvent | TsunamiCall | TsunamiBlock | TsunamiTransfer | TsunamiTransaction = any,
   >(
     endpoint: string,
     criteria: GetTsunamiEventQuery | Record<string, any>,
     boundaries: TsunamiDataQueryBoundaries,
-  ): AsyncGenerator<T[]> {
+  ): AsyncGenerator<Item[]> {
     let offset: string | undefined;
     let hasMore;
+    const hardLimit = boundaries.limit ?? Infinity;
+    let fetched = 0;
     do {
       const params = {
         ...boundaries,
         ...convertForRequest(criteria),
         ...(offset ? { offset } : {}),
-        limit: Math.min(boundaries?.limit ?? 1000, 1000),
+        limit: Math.min(boundaries.batchSize ?? 1000, boundaries.limit ?? 1000, 1000),
       };
 
-      const response = await this.instance
-        .get<{ range: TsunamiRange; items: T[] }>(endpoint, {
-          params,
-        })
-        .catch(error => {
-          if (isAxiosError(error)) {
-            throw new TsunamiError(
-              error.response?.data?.message ?? REQUEST_FAILED_MESSAGE,
-              error.response?.status ?? null,
-              error.response?.data?.error ?? null,
-              error.cause ?? null,
-            );
-          }
-          throw new TsunamiError(REQUEST_FAILED_MESSAGE, null, null, error);
-        });
+      const response = await this.doRequest<Item>(endpoint, params);
 
-      if (!response?.data?.items) {
-        throw new TsunamiError(MALFORMED_RESPONSE_MESSAGE, null, null);
+      if (response.data.items.length > hardLimit - fetched) {
+        yield response.data.items.splice(0, hardLimit - fetched);
+        return;
       }
 
       yield response.data.items;
+      fetched += response.data.items.length;
 
       hasMore = response.data.range.has_more;
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       offset = response.data.range.next_offset!;
-    } while (hasMore);
+    } while (hasMore && fetched < hardLimit);
+  }
+
+  protected async doRequest<
+    Item extends TsunamiEvent | TsunamiCall | TsunamiBlock | TsunamiTransfer | TsunamiTransaction = any,
+  >(endpoint: string, params: Record<string, string | number>) {
+    const response = await this.instance
+      .get<{ range: TsunamiRange; items: Item[] }>(endpoint, {
+        params,
+      })
+      .catch(error => {
+        if (isAxiosError(error)) {
+          throw new TsunamiError(
+            error.response?.data?.message ?? REQUEST_FAILED_MESSAGE,
+            error.response?.status ?? null,
+            error.response?.data?.error ?? null,
+            error.cause ?? null,
+          );
+        }
+        throw new TsunamiError(REQUEST_FAILED_MESSAGE, null, null, error);
+      });
+
+    if (!response?.data?.items) {
+      throw new TsunamiError(MALFORMED_RESPONSE_MESSAGE, null, null);
+    }
+
+    return response;
   }
 }
