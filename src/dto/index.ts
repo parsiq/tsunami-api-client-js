@@ -9,6 +9,7 @@ export * from './tsunami-event-belonging-to-call';
 export * from './tsunami-log';
 export * from './tsunami-range';
 export * from './tsunami-transaction';
+export * from './tsunami-transfer';
 export * from './transaction-log';
 export * from './block-hash-range-query';
 export * from './tsunami-data-query-boundaries';
