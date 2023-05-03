@@ -11,13 +11,14 @@ import {
   TsunamiTransactionWithLogs,
 } from '../dto';
 import { HttpClient } from './http-client';
-import { AxiosRequestConfig, HttpStatusCode } from 'axios';
+import { AxiosRequestConfig, HttpStatusCode, isAxiosError } from 'axios';
 import { convertForRequest } from './convertor';
 import { IAxiosRetryConfig } from 'axios-retry';
 import { ChainId } from '../enum/chain-id';
 import { GetTsunamiTransfersQuery } from '../dto/get-tsunami-transfers-query';
 import { GetWalletTransactionsQuery } from '../dto/get-wallet-transactions-query';
 import { TsunamiTransfer } from '../dto/tsunami-transfer';
+import { TsunamiError } from './tsunami-error';
 
 const MALFORMED_RESPONSE_MESSAGE = 'Malformed Tsunami response';
 const REQUEST_FAILED_MESSAGE = 'Tsunami request failed';
@@ -50,15 +51,27 @@ export class TsunamiApiClient extends HttpClient implements TsunamiClient {
     try {
       const response = await this.instance.get<TsunamiBlock>(`/blocks/${blockHash}`);
       if (!response?.data) {
-        throw new Error('Malformed Tsunami response');
+        throw new Error(MALFORMED_RESPONSE_MESSAGE);
       }
 
       return response.data;
-    } catch (err) {
-      if (err.isAxiosError && err.response?.status === HttpStatusCode.NotFound) {
-        throw new Error('Block not found');
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === HttpStatusCode.NotFound) {
+          throw new TsunamiError(
+            'Block not found',
+            error.response?.status ?? null,
+            error.response?.data?.error ?? null,
+          );
+        }
+        throw new TsunamiError(
+          error.response?.data?.message ?? REQUEST_FAILED_MESSAGE,
+          error.response?.status ?? null,
+          error.response?.data?.error ?? null,
+          error.cause ?? null,
+        );
       }
-      throw new Error('Tsunami request failed');
+      throw new TsunamiError(REQUEST_FAILED_MESSAGE, null, null, error);
     }
   }
 
@@ -100,8 +113,16 @@ export class TsunamiApiClient extends HttpClient implements TsunamiClient {
         throw new Error(MALFORMED_RESPONSE_MESSAGE);
       }
       return response.data;
-    } catch (err) {
-      throw new Error(REQUEST_FAILED_MESSAGE);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        throw new TsunamiError(
+          error.response?.data?.message ?? REQUEST_FAILED_MESSAGE,
+          error.response?.status ?? null,
+          error.response?.data?.error ?? null,
+          error.cause ?? null,
+        );
+      }
+      throw new TsunamiError(REQUEST_FAILED_MESSAGE, null, null, error);
     }
   }
 
@@ -129,15 +150,27 @@ export class TsunamiApiClient extends HttpClient implements TsunamiClient {
     try {
       const response = await this.instance.get<TsunamiTransaction>(`/txs/${transactionHash}`);
       if (!response?.data) {
-        throw new Error('Malformed Tsunami response');
+        throw new Error(MALFORMED_RESPONSE_MESSAGE);
       }
 
       return response.data;
-    } catch (err) {
-      if (err.isAxiosError && err.response?.status === HttpStatusCode.NotFound) {
-        throw new Error('Transaction not found');
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === HttpStatusCode.NotFound) {
+          throw new TsunamiError(
+            'Transaction not found',
+            error.response?.status ?? null,
+            error.response?.data?.error ?? null,
+          );
+        }
+        throw new TsunamiError(
+          error.response?.data?.message ?? REQUEST_FAILED_MESSAGE,
+          error.response?.status ?? null,
+          error.response?.data?.error ?? null,
+          error.cause ?? null,
+        );
       }
-      throw new Error('Tsunami request failed');
+      throw new TsunamiError(REQUEST_FAILED_MESSAGE, null, null, error);
     }
   }
 
@@ -145,15 +178,27 @@ export class TsunamiApiClient extends HttpClient implements TsunamiClient {
     try {
       const response = await this.instance.get<TsunamiTransaction>(`/txs/${transactionHash}/logs`);
       if (!response?.data) {
-        throw new Error('Malformed Tsunami response');
+        throw new Error(MALFORMED_RESPONSE_MESSAGE);
       }
 
       return response.data;
-    } catch (err) {
-      if (err.isAxiosError && err.response?.status === HttpStatusCode.NotFound) {
-        throw new Error('Transaction not found');
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === HttpStatusCode.NotFound) {
+          throw new TsunamiError(
+            'Transaction not found',
+            error.response?.status ?? null,
+            error.response?.data?.error ?? null,
+          );
+        }
+        throw new TsunamiError(
+          error.response?.data?.message ?? REQUEST_FAILED_MESSAGE,
+          error.response?.status ?? null,
+          error.response?.data?.error ?? null,
+          error.cause ?? null,
+        );
       }
-      throw new Error('Tsunami request failed');
+      throw new TsunamiError(REQUEST_FAILED_MESSAGE, null, null, error);
     }
   }
 
@@ -214,12 +259,20 @@ export class TsunamiApiClient extends HttpClient implements TsunamiClient {
         .get<{ range: TsunamiRange; items: T[] }>(endpoint, {
           params,
         })
-        .catch(() => {
-          throw new Error(REQUEST_FAILED_MESSAGE);
+        .catch(error => {
+          if (isAxiosError(error)) {
+            throw new TsunamiError(
+              error.response?.data?.message ?? REQUEST_FAILED_MESSAGE,
+              error.response?.status ?? null,
+              error.response?.data?.error ?? null,
+              error.cause ?? null,
+            );
+          }
+          throw new TsunamiError(REQUEST_FAILED_MESSAGE, null, null, error);
         });
 
       if (!response?.data?.items) {
-        throw new Error(MALFORMED_RESPONSE_MESSAGE);
+        throw new TsunamiError(MALFORMED_RESPONSE_MESSAGE, null, null);
       }
 
       yield response.data.items;
