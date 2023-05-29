@@ -3,5 +3,5 @@ export interface FtBasicTokenInfoItem {
   decimals: number | null;
   symbol: string | null;
   name: string | null;
-  estimated_usd_value: string | null;
+  estimated_usd_price: string | null;
 }
