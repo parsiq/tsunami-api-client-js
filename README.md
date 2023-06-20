@@ -1,6 +1,6 @@
 # PARSIQ Tsunami API JS client
 
-Easy access PARSIQ Tsunami API using this JS client.
+Easy access to PARSIQ Tsunami API, using this JS client.
 
 ## Getting Started
 
@@ -10,7 +10,7 @@ Install via npm:
 $ npm i @parsiq/tsunami-client
 ```
 
-Setup credentials and select chain to query:
+Set credentials and select a chain to query:
 
 ```typescript
 import { ChainId, TsunamiApiClient } from '@parsiq/tsunami-client';
@@ -39,7 +39,7 @@ for await (const event of tsunami.getEvents(
 }
 ```
 
-Switch to other chain:
+Switch to another chain:
 
 ```typescript
 tsunami.setChain(ChainId.AVALANCHE_MAINNET);
