@@ -1,13 +1,14 @@
 import { TsunamiClient } from './tsunami-client-interface';
 import {
-  TsunamiBlock,
+  GetTsunamiCallQuery,
   GetTsunamiEventQuery,
+  TsunamiBlock,
+  TsunamiCall,
   TsunamiDataQueryBoundaries,
   TsunamiEvent,
-  TsunamiCall,
-  GetTsunamiCallQuery,
   TsunamiRange,
   TsunamiTransaction,
+  TsunamiTransfer,
   TsunamiTransactionWithLogs,
 } from '../dto';
 import { HttpClient } from './http-client';
@@ -17,7 +18,6 @@ import { IAxiosRetryConfig } from 'axios-retry';
 import { ChainId } from '../enum/chain-id';
 import { GetTsunamiTransfersQuery } from '../dto/get-tsunami-transfers-query';
 import { GetWalletTransactionsQuery } from '../dto/get-wallet-transactions-query';
-import { TsunamiTransfer } from '../dto/tsunami-transfer';
 import { TsunamiError } from './tsunami-error';
 
 const MALFORMED_RESPONSE_MESSAGE = 'Malformed Tsunami response';
@@ -45,6 +45,12 @@ export class TsunamiApiClient extends HttpClient implements TsunamiClient {
 
   public setChain(chain: ChainId) {
     this.instance.defaults.baseURL = baseUrl(chain);
+  }
+
+  public async getBlockByNumber(blockNumber: number) {
+    const block = this.getBlocks(blockNumber, blockNumber);
+
+    return (await block.next()).value as TsunamiBlock;
   }
 
   public async getBlockByHash(blockHash: string): Promise<TsunamiBlock> {

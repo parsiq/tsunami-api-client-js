@@ -1,16 +1,20 @@
-import { TsunamiBlock } from '../dto/tsunami-block';
-import { TsunamiEvent } from '../dto/tsunami-event';
-import { TsunamiCall } from '../dto/tsunami-call';
-import { GetTsunamiEventQuery } from '../dto/get-tsunami-event-query';
-import { GetTsunamiCallQuery } from '../dto/get-tsunami-call-query';
-import { TsunamiDataQueryBoundaries } from '../dto/tsunami-data-query-boundaries';
-import { TsunamiTransaction, TsunamiTransactionWithLogs } from '../dto';
+import {
+  GetTsunamiCallQuery,
+  GetTsunamiEventQuery,
+  TsunamiBlock,
+  TsunamiCall,
+  TsunamiDataQueryBoundaries,
+  TsunamiEvent,
+  TsunamiTransaction,
+  TsunamiTransactionWithLogs,
+  TsunamiTransfer,
+} from '../dto';
 import { GetTsunamiTransfersQuery } from '../dto/get-tsunami-transfers-query';
-import { TsunamiTransfer } from '../dto/tsunami-transfer';
 import { GetWalletTransactionsQuery } from '../dto/get-wallet-transactions-query';
 
 export interface TsunamiClient {
   getBlockByHash(blockHash: string): Promise<TsunamiBlock>;
+  getBlockByNumber(blockNumber: number): Promise<TsunamiBlock>;
   getBlocks(startBlockNumber: number, endBlockNumber: number): AsyncGenerator<TsunamiBlock, void, undefined>;
   getBlocksByTimestamp(
     startBlockTimestamp: number,
