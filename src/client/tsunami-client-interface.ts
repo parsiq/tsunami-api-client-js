@@ -1,8 +1,12 @@
 import {
+  GetContractCreateQuery,
+  GetContractSelfDestructsQuery,
   GetTsunamiCallQuery,
   GetTsunamiEventQuery,
   TsunamiBlock,
   TsunamiCall,
+  TsunamiContractCreate,
+  TsunamiContractSelfDestruct,
   TsunamiDataQueryBoundaries,
   TsunamiEvent,
   TsunamiTransaction,
@@ -55,4 +59,12 @@ export interface TsunamiClient {
     criteria: GetWalletTransactionsQuery & { include_logs: true },
     boundaries: TsunamiDataQueryBoundaries,
   ): AsyncGenerator<TsunamiTransactionWithLogs, void, undefined>;
+  getContractSelfDestructs(
+    criteria: GetContractSelfDestructsQuery,
+    boundaries: TsunamiDataQueryBoundaries,
+  ): AsyncGenerator<TsunamiContractSelfDestruct, void, undefined>;
+  getContractCreates(
+    criteria: GetContractCreateQuery,
+    boundaries: TsunamiDataQueryBoundaries,
+  ): AsyncGenerator<TsunamiContractCreate, void, undefined>;
 }

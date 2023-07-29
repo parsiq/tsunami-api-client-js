@@ -2,6 +2,7 @@ import { TsunamiClient } from './tsunami-client-interface';
 import {
   GetTsunamiCallQuery,
   GetTsunamiEventQuery,
+  GetContractSelfDestructsQuery,
   TsunamiBlock,
   TsunamiCall,
   TsunamiDataQueryBoundaries,
@@ -10,6 +11,9 @@ import {
   TsunamiTransaction,
   TsunamiTransfer,
   TsunamiTransactionWithLogs,
+  TsunamiContractSelfDestruct,
+  GetContractCreateQuery,
+  TsunamiContractCreate,
 } from '../dto';
 import { HttpClient } from './http-client';
 import { AxiosRequestConfig, HttpStatusCode, isAxiosError } from 'axios';
@@ -241,6 +245,28 @@ export class TsunamiApiClient extends HttpClient implements TsunamiClient {
 
     for await (const transactions of stream) {
       yield* transactions;
+    }
+  }
+
+  async *getContractSelfDestructs(
+    criteria: GetContractSelfDestructsQuery,
+    boundaries: TsunamiDataQueryBoundaries,
+  ): AsyncGenerator<TsunamiContractSelfDestruct, void, undefined> {
+    const stream = this.queryTsunami<TsunamiContractSelfDestruct>('/contracts/self-destructs', criteria, boundaries);
+
+    for await (const selfDestruct of stream) {
+      yield* selfDestruct;
+    }
+  }
+
+  async *getContractCreates(
+    criteria: GetContractCreateQuery,
+    boundaries: TsunamiDataQueryBoundaries,
+  ): AsyncGenerator<TsunamiContractSelfDestruct, void, undefined> {
+    const stream = this.queryTsunami<TsunamiContractCreate>('/contracts/creates', criteria, boundaries);
+
+    for await (const create of stream) {
+      yield* create;
     }
   }
 
