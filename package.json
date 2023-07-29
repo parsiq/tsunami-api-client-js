@@ -21,9 +21,23 @@
     "type": "git",
     "url": "git+ssh://git@github.com/parsiq/tsunami-api-client-js.git"
   },
-  "author": "",
+  "author": {
+    "name": "PARSIQ",
+    "email": "support@parsiq.net",
+    "url": "https://parsiq.net"
+  },
+  "keywords": [
+    "blockhain",
+    "blockhain api",
+    "blockhain data",
+    "web3 api",
+    "web3 data",
+    "ethereum",
+    "polygon"
+  ],
   "license": "MIT",
   "bugs": {
+    "email": "support@parsiq.net",
     "url": "https://github.com/parsiq/tsunami-api-client-js/issues"
   },
   "homepage": "https://github.com/parsiq/tsunami-api-client-js",
