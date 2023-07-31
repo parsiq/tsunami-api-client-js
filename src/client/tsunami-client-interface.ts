@@ -56,7 +56,7 @@ export interface TsunamiClient {
   ): AsyncGenerator<TsunamiTransaction, void, undefined>;
   getWalletTransactions(
     address: string,
-    criteria: GetWalletTransactionsQuery & { include_logs: true },
+    criteria: GetWalletTransactionsQuery & { include_logs?: true },
     boundaries: TsunamiDataQueryBoundaries,
   ): AsyncGenerator<TsunamiTransactionWithLogs, void, undefined>;
   getContractSelfDestructs(
