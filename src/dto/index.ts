@@ -13,3 +13,7 @@ export * from './tsunami-transfer';
 export * from './transaction-log';
 export * from './block-hash-range-query';
 export * from './tsunami-data-query-boundaries';
+export * from './tsunami-contract-self-destruct';
+export * from './tsunami-contract-create';
+export * from './get-contract-self-destructs-query';
+export * from './get-contract-create-query';
