@@ -1,6 +1,5 @@
 export enum ChainId {
   ETH_MAINNET = 'eip155-1', // Eth Mainnet
-  ETH_GOERLI = 'eip155-5', // Eth Goerli
   ETH_SEPOLIA = 'eip155-11155111', // Eth Sepolia
   ETH_HOLESKY = 'eip155-17000', // Eth Sepolia
   AVALANCHE_MAINNET = 'eip155-43114', // Avax Mainnet
@@ -12,5 +11,5 @@ export enum ChainId {
   POLYGON_ZKEVM_MAINNET = 'eip155-1101', // Polygon zkEVM Mainnet
   BNB_TESTNET = 'eip155-97',
   OPBNB_TESTNET = 'eip155-5611', // opBNB Testnet
-  POLYGON_MUMBAI = 'eip155-80001',
+  POLYGON_AMOY = 'eip155-80002',
 }
