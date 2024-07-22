@@ -10,6 +10,5 @@ export enum ChainId {
   METIS_MAINNET = 'eip155-1088', // Metis Mainnet
   POLYGON_ZKEVM_MAINNET = 'eip155-1101', // Polygon zkEVM Mainnet
   BNB_TESTNET = 'eip155-97',
-  OPBNB_TESTNET = 'eip155-5611', // opBNB Testnet
   POLYGON_AMOY = 'eip155-80002',
 }
